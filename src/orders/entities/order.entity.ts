@@ -16,7 +16,7 @@ export enum OrderStatus {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 })
-export class Order extends Model {
+export class Order extends Model<Order> {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
   id: string;

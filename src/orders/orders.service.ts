@@ -6,9 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class OrdersService {
-  constructor(@InjectModel(Order) private orderModel: typeof Order) {
-    
-  }
+  constructor(@InjectModel(Order) private orderModel: typeof Order) {}
 
   create(createOrderDto: CreateOrderDto) {
     return this.orderModel.create(createOrderDto);

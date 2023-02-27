@@ -1,12 +1,24 @@
-FROM node:14.15.4-alpine3.12
+###################
+# BUILD FOR LOCAL DEVELOPMENT
+###################
 
-RUN apk add --no-cache bash curl && \
-    curl https://raw.githubusercontent.com/eficode/wait-for/v2.1.3/wait-for --output /usr/bin/wait-for && \
-    chmod +x /usr/bin/wait-for
+FROM node:18-alpine As development
 
+# RUN corepack enable pnpm
 
-RUN npm install -g @nestjs/cli@8.0.0
+# Create app directory
+WORKDIR /usr/src/app
 
+# Copy application dependency manifests to the container image.
+# A wildcard is used to ensure copying both package.json AND package-lock.json (when available).
+# Copying this first prevents re-running npm install on every code change.
+COPY --chown=node:node package.json ./
+
+# Install app dependencies using the `npm ci` command instead of `npm install`
+RUN npm install
+
+# Bundle app source
+COPY --chown=node:node . .
+
+# Use the node user from the image (instead of the root user)
 USER node
-
-WORKDIR /home/node/app
